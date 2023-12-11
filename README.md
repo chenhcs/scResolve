@@ -229,7 +229,7 @@ There are several important parameters you need to consider.
 # Running scResolve on your Visium data
 Before you run your Visium data, please read the configuration!!!  
 
-To run with Visium data, you need to provide paths of below files  
+To run with Visium data, you need to provide paths of below files:  
 ``bc-matrix``: bc-matrix provided by Visium platform(e.g filtered_feature_bc_matrix.h5).   
 ``image``: H&E image. We recommend using high resolution image.  
 ``tissue-position``: Tissue position provided by Visium platform. It has name of tissue_positios_list.csv. Make sure it has a header.  
