@@ -4,7 +4,7 @@
 
 
 <p align="center">
-<img src=test.png width="500" height="500">
+<img src=assets/scresolve.png width="500" height="500">
 </p>
 
 
