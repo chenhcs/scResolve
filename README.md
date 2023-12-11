@@ -15,12 +15,12 @@ It's easy to use: with below 3 command lines, you can recover single cell level 
 ``scresolve segment`` - get single cells
 
 # Contents
-- [Install](https://github.com/youngje-cs-cmu/test2/blob/main/README.md#install)
+- [Install](https://github.com/chenhcs/scResolve/blob/main/README.md#install)
 - Tutorial: Running scResolve on Breast cancer ST data
-    - [Quick version with running one breast cancer section](https://github.com/youngje-cs-cmu/test2/blob/main/README.md#quick-version-running-one-slide-of-breast-cancer)
-    - [Running all 4 breast cancer sections](https://github.com/youngje-cs-cmu/test2/blob/main/README.md#running-all-4-breast-cancer-sections)
-- [Configuration](https://github.com/youngje-cs-cmu/test2/blob/main/README.md#configuration)
-- [Running scResolve on your Visium data](https://github.com/youngje-cs-cmu/test2/blob/main/README.md#running-scresolve-on-your-visium-data)
+    - [Quick version with running one breast cancer section](https://github.com/chenhcs/scResolve/blob/main/README.md#quick-version-running-one-slide-of-breast-cancer)
+    - [Running all 4 breast cancer sections](https://github.com/chenhcs/scResolve/blob/main/README.md#running-all-4-breast-cancer-sections)
+- [Configuration](https://github.com/chenhcs/scResolve/blob/main/README.md#configuration)
+- [Running scResolve on your Visium data](https://github.com/chenhcs/scResolve/blob/main/README.md#running-scresolve-on-your-visium-data)
 - Acknowledgment
 
 
