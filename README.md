@@ -116,7 +116,7 @@ scresolve convert st --counts section4.tsv --image section4.jpg --transformation
 ````
 Now, for each prepared formatted input section, run super-resolution and segmentation. We highly recommend running below commands in cluster environment, so you can utilize parallelization.  
 Please remember to change slide names in the configuration file to avoid overwriting overwriting existing result.
-For example, when you run section1,
+For example, when you run section1,  
 ````
 [slides.section1]
 data = "path_to_h5"
@@ -124,15 +124,13 @@ image= "path_to_img"
 [slides.section1.covariates]
 section = 1
 ````
-When you run second section,
+When you run second section,  
 ````
-
 [slides.section2]
 data = "path_to_h5"
 image= "path_to_img"
 [slides.section2.covariates]
 section = 2
-
 ````
 
 # Configuration
