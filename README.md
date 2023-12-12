@@ -115,32 +115,25 @@ scresolve convert st --counts section3.tsv --image section3.jpg --transformation
 scresolve convert st --counts section4.tsv --image section4.jpg --transformation-matrix section4-alignment.txt --scale 0.3 --save-path section4
 ````
 Now, for each prepared formatted input section, run super-resolution and segmentation. We highly recommend running below commands in cluster environment, so you can utilize parallelization.  
-We prepared configuration files for each section for you. The differences between configuration files are unique naming to prevent overwriting.  
-
-section 1  
+Please remember to change slide names in the configuration file to avoid overwriting overwriting existing result.
+For example, when you run section1,
 ````
-scresolve super-resolution tutorial_section1.toml --save-path section1
-scresolve segment tutorial_section1.toml --count ./segment_input/section1.tsv --image ./segment_input/section1.jpg
+[slides.section1]
+data = "path_to_h5"
+image= "path_to_img"
+[slides.section1.covariates]
+section = 1
 ````
-  
-section 2  
-````
-scresolve super-resolution tutorial_section2.toml --save-path section2
-scresolve segment tutorial_section2.toml --count ./segment_input/section2.tsv --image ./segment_input/section2.jpg
-````
-  
-section 3  
-````
-scresolve super-resolution tutorial_section3.toml --save-path section3
-scresolve segment tutorial_section3.toml --count ./segment_input/section3.tsv --image ./segment_input/section3.jpg
-````
-  
-section 4  
-````
-scresolve super-resolution tutorial_section4.toml --save-path section4
-scresolve segment tutorial_section4.toml --count ./segment_input/section4.tsv --image ./segment_input/section4.jpg
+When you run second section,
 ````
 
+[slides.section2]
+data = "path_to_h5"
+image= "path_to_img"
+[slides.section2.covariates]
+section = 2
+
+````
 
 # Configuration
 
