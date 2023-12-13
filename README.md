@@ -30,7 +30,7 @@ scResolve is developed with Python 3.9
 ````
 conda create -n scresolve python=3.9
 conda activate scresolve
-pip install git@git
+pip install git+https://github.com/chenhcs/scResolve@main
 ````
 This will take time. Once installation is completed, verify the installation by ``scresolve``
 scResolve is tested under NVIDIA RTX3080 and torch=1.11.1. If you face an issue with installation, see Install a different version of torch in scResolve
