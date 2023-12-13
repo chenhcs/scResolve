@@ -1,5 +1,10 @@
 # pylint: disable=missing-docstring, invalid-name, too-many-instance-attributes
 
+# This code is adapted from Xfuse
+# Copyright (c) 2023 Ludvig Bergenstrahle
+# Licensed under the under the MIT License
+
+
 import itertools as it
 import json
 import logging
