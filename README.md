@@ -10,10 +10,10 @@
 
 scResolve is a deep learning based method that recovers spatially resolved single cell expression profiles from low-resolution spatial transcriptomics and paired histology image.  
 
-It's easy to use. With below 3 command lines, you can obtain an [anndata](https://anndata.readthedocs.io/en/latest/) object storing single-cells gene expression and cell locations in tissue from low-resolution spatial transcriptomics data, like Visium.
-``scresolve convert`` - preprocess your data
-``scresolve super-resolution `` - run super-resolution to obtain pixel-level expression
-``scresolve segment`` - run cell segmentation to obtain expression profiles of single cells and their locations
+It's easy to use. With below 3 command lines, you can obtain an [anndata](https://anndata.readthedocs.io/en/latest/) object storing single-cell gene expression and cell locations in tissue from low-resolution spatial transcriptomics data, like Visium.
+- ``scresolve convert`` - preprocess your data
+- ``scresolve super-resolution `` - run super-resolution to obtain pixel-level expression
+- ``scresolve segment`` - run cell segmentation to obtain expression profiles of single cells and their locations
 
 # Contents
 - [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
