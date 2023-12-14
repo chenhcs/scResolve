@@ -9,43 +9,34 @@
 
 
 scResolve is a deep learning based method that recovers spatially resolved single cell expression profiles from low-resolution spatial transcriptomics and paired histology image.  
-It's easy to use. With below 3 command lines, you can obtain gene expression of single cells and their locations from low-resolution spatial transcriptomics data, like Visium. The results will be sotred in [anndata](https://anndata.readthedocs.io/en/latest/) data matrices.
+
+It's easy to use. With below 3 command lines, you can obtain gene expression of single cells and their locations in tissue from low-resolution spatial transcriptomics data, like Visium. The results will be stored in [anndata](https://anndata.readthedocs.io/en/latest/) data matrices.
 ``scresolve convert`` - preprocess your data  
-``scresolve super-resolution `` - run super-resolution model  
-``scresolve segment`` - get single cells
+``scresolve super-resolution `` - run super-resolution to obtain pixel-level expression
+``scresolve segment`` - run cell segmentation to obtain expression profiles of single cells and their locations
 
 # Contents
 - [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
-- Tutorial: Running scResolve on Breast cancer ST data
-    - [Quick version with running one breast cancer section](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#quick-version-running-one-slide-of-breast-cancer)
-    - [Running all 4 breast cancer sections](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#running-all-4-breast-cancer-sections)
+- [Tutorial: Run scResolve on breast cancer dataset from ST platform](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#quick-version-running-one-slide-of-breast-cancer)
 - [Configuration](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#configuration)
-- [Running scResolve on your Visium data](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#running-scresolve-on-your-visium-data)
-- Acknowledgment
+- [Running scResolve on Visium data](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#running-scresolve-on-your-visium-data)
+- [Contact]()
 
 
 
 # Install
-scResolve is developed with Python 3.9
+scResolve is developed and tested under Python 3.9. Run the following command to install scResolve.
 ````
 conda create -n scresolve python=3.9
 conda activate scresolve
 pip install git+https://github.com/chenhcs/scResolve@main
 ````
-This will take time. Once installation is completed, verify the installation by ``scresolve``
-scResolve is tested under NVIDIA RTX3080 and torch=1.11.1. If you face an issue with installation, see Install a different version of torch in scResolve
+Once installation is completed, verify the installation by command ``scresolve``.
 
-# Tutorial: Running scResolve on Breast cancer ST data
-Here we provide 2 tutorials  
-    - First tutorial is quick version, where you can get the idea of how to use scResolve quickly.  
-    - Second tutorial is how to replicate our work.
+# Tutorial: Run scResolve on breast cancer dataset from ST platform
+Here we provide a tutorial on applying scResolve to the breast cancer dataset generated from the ST platform and reproducing the results from our work.
 
-In our work, we used data from [Patrick et al](https://www.science.org/doi/10.1126/science.aaf2403)
-## Quick version: Running one slide of Breast cancer
-In this tutorial, we will recover single cells in one of the slides in the breast cancer section.
-
-The link to the dataset is: [https://www.spatialresearch.org/resources-published-datasets/doi-10-1126science-aaf2403/](https://www.spatialresearch.org/resources-published-datasets/doi-10-1126science-aaf2403/)  
-Or simply you can download with below codes. This will download H&E image, gene expression count and alignment data
+There are four ST sections in the dataset. Download the data from the link [https://www.spatialresearch.org/resources-published-datasets/doi-10-1126science-aaf2403/](https://www.spatialresearch.org/resources-published-datasets/doi-10-1126science-aaf2403/), or simply use the commands below. We will first use one section as an example, and the same steps can be repeated on the other three sections.
 
 ````
 curl -Lo section1.jpg https://www.spatialresearch.org/wp-content/uploads/2016/07/HE_layer1_BC.jpg
@@ -53,82 +44,31 @@ curl -Lo section1.tsv https://www.spatialresearch.org/wp-content/uploads/2016/07
 curl -Lo section1-alignment.txt https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer1_BC_transformation.txt
 ````
 
-Below code will generate the formatted input for super-resolution model
+The data locations and model parameters are set in the *.toml file [link](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section.
+
+The command below will generate the formatted input for the model.
 
 ````
 scresolve convert st --counts section1.tsv --image section1.jpg --transformation-matrix section1-alignment.txt --scale 0.3 --save-path section1
 ````
-We save settings in *.toml file. For the setting of this tutorial, you can see in [link](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial_quick.toml).
 
-Now we can run super-resolution model.
+Next we run super-resolution on the low-resolution spatial transcriptomics and the histology image.
 
 ````
-scresolve super-resolution tutorial_quick.toml --save-path tutorial_quick
+scresolve super-resolution tutorial_quick.toml --save-path tutorial
 ````
 
-This process will generate output of the super-resolution model, then preprocess the output to generate the formatted input for the segmentation model.
-In detail, you will see a tsv file and a grey-scaled jpg file in ``segment_input`` directory.
+This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the ``segment_input`` directory. A grey-scaled jpg image in will be saved in the same path.
 
-Finally, we run segmentation model
+Finally, run cell segmentation model
 ````
 scresolve segment tutorial.toml --count ./segment_input/section1.tsv --image ./segment_input/section1.jpg
 ````
 
-This command generates the coordinates of cells in spot2cell.txt and visualized map as cell_masks.png
+This step will identify individual cells from the high-resolution expression maps and the histology image. An anndata object storing the expression profiles and locations of cells will be saved.
 
+Results for the other three sections in this dataset can be generated by repeating the same steps. The data can be downloaded using the commands in `get_data.sh`.
 
-## Running all 4 breast cancer sections
-This is replicating our work. In summary, we apply the quick version tutorial to all 4 sections.  
-We run each sections separately, due to high computational resource requirement of using all 4sections at once, and running each sections separately allows us to utilize cluster environment.  
-
-First we download H&E image, gene expression count and alignment data of all 4 sections.  
-````
-# Image data
-curl -Lo section1.jpg https://www.spatialresearch.org/wp-content/uploads/2016/07/HE_layer1_BC.jpg
-curl -Lo section2.jpg https://www.spatialresearch.org/wp-content/uploads/2016/07/HE_layer2_BC.jpg
-curl -Lo section3.jpg https://www.spatialresearch.org/wp-content/uploads/2016/07/HE_layer3_BC.jpg
-curl -Lo section4.jpg https://www.spatialresearch.org/wp-content/uploads/2016/07/HE_layer4_BC.jpg
-
-# Gene expression count data
-curl -Lo section1.tsv https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer1_BC_count_matrix-1.tsv
-curl -Lo section2.tsv https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer2_BC_count_matrix-1.tsv
-curl -Lo section3.tsv https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer3_BC_count_matrix-1.tsv
-curl -Lo section4.tsv https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer4_BC_count_matrix-1.tsv
-
-# Alignment data
-curl -Lo section1-alignment.txt https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer1_BC_transformation.txt
-curl -Lo section2-alignment.txt https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer2_BC_transformation.txt
-curl -Lo section3-alignment.txt https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer3_BC_transformation.txt
-curl -Lo section4-alignment.txt https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer4_BC_transformation.txt
-
-````
-
-Prepare formatted input for super-resolution model  
-
-````
-scresolve convert st --counts section1.tsv --image section1.jpg --transformation-matrix section1-alignment.txt --scale 0.3 --save-path section1
-scresolve convert st --counts section2.tsv --image section2.jpg --transformation-matrix section2-alignment.txt --scale 0.3 --save-path section2
-scresolve convert st --counts section3.tsv --image section3.jpg --transformation-matrix section3-alignment.txt --scale 0.3 --save-path section3
-scresolve convert st --counts section4.tsv --image section4.jpg --transformation-matrix section4-alignment.txt --scale 0.3 --save-path section4
-````
-Now, for each prepared formatted input section, run super-resolution and segmentation. We highly recommend running below commands in cluster environment, so you can utilize parallelization.  
-Please remember to change slide names in the configuration file to avoid overwriting overwriting existing result.
-For example, when you run section1,  
-````
-[slides.section1]
-data = "path_to_h5"
-image= "path_to_img"
-[slides.section1.covariates]
-section = 1
-````
-When you run second section,  
-````
-[slides.section2]
-data = "path_to_h5"
-image= "path_to_img"
-[slides.section2.covariates]
-section = 2
-````
 
 # Configuration
 
@@ -192,30 +132,18 @@ image= "path_to_img"
 [slides.section2.covariates]
 section = 2
 ````
-There are several important parameters you need to consider.  
+There are several important parameters to be considered.  
 
 **Super-resolution model**  
-    1. Backtrack  
-    We noticed that if number of metagenes is lower than number of the cell types, the model confuses and super-resolution might be inaccurate.  
-    Therefore, you might need to use recent session that satisfies the minimum number of metagene threshold.   
-    You can control this in toml setting file.  
-    - ``backtrack``: true if you want to use backtrack.  
-    - ``min_num_metagenes``: Minimum number of metagenes. Ignored if backtrack == false  
-    2. ``scale_factor``  
-    This parameter controls mataching gene expression matrix with image. We recommend using default value, which is 10  
-    Other parameters detail can be found in this [link](https://github.com/ludvb/xfuse#configuring-and-starting-the-run)   
+    1. ``backtrack``: this is used for model selection. Set to `true` if you want to backtrack to select a model checkpoint with at least a minimum number of metagenes set by `min_num_metagenes`.  
+    2. ``min_num_metagenes``: minimum number of metagenes. Ignored if backtrack is `false`.
+    Detailed explanations for other parameters can be found [here](https://github.com/ludvb/xfuse#configuring-and-starting-the-run).
 
 **Segment model**   
-    - bg_th: Determines which pixels will be treated as background.  
-    - ws_otsu_classes: Decides how large the detected nuclei by Watershed will be.We recommend using a value of 3 or 4.  
-
-
-
-
+    1. `bg_th`: determines which pixels will be treated as background.  
+    2. `ws_otsu_classes`: decides how large the detected nuclei by watershed will be. We recommend using a value of 3 or 4.  
 
 # Running scResolve on your Visium data
-Before you run your Visium data, please read the configuration!!!  
-
 To run with Visium data, you need to provide paths of below files:  
 ``bc-matrix``: bc-matrix provided by Visium platform(e.g filtered_feature_bc_matrix.h5).   
 ``image``: H&E image. We recommend using high resolution image.  
@@ -244,7 +172,8 @@ Finally, run
 scresolve segment CONFIGURATION_FILE --count PATH_TO_SUPER_RESOLUTION_OUTPUT--image PATH_TO_IMAGE_OUTPUT
 ````
 
-
-
-# Acknowledgment
-We specially appreciate authors of Xfuse for their generous usage of their model.
+# Contact
+Contact us if you have any questions:
+Hao Chen: hchen4 at andrew.cmu.edu
+Young Je Lee: youngjel at cs.cmu.edu
+Jose Lugo-Martinez: jlugomar at andrew.cmu.edu
