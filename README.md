@@ -10,10 +10,10 @@
 
 scResolve is a deep learning based method that recovers spatially resolved single cell expression profiles from low-resolution spatial transcriptomics and paired histology image.  
 
-It's easy to use. With below 3 command lines, you can obtain an [anndata](https://anndata.readthedocs.io/en/latest/) object storing single-cell gene expression and cell locations in tissue from low-resolution spatial transcriptomics data, like Visium.
-- ``scresolve convert`` - preprocess your data
-- ``scresolve super-resolution `` - run super-resolution to obtain pixel-level expression
-- ``scresolve segment`` - run cell segmentation to obtain expression profiles of single cells and their locations
+It's easy to use. With below 3 command lines, you can obtain an [anndata](https://anndata.readthedocs.io/en/latest/) object storing single-cell gene expression and cell locations in tissue from low-resolution spatial transcriptomics data, like Visium.</br>
+``scresolve convert`` - preprocess your data</br>
+``scresolve super-resolution `` - run super-resolution to obtain pixel-level expression</br>
+``scresolve segment`` - run cell segmentation to obtain expression profiles of single cells and their</br> locations
 
 # Contents
 - [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
@@ -24,7 +24,7 @@ It's easy to use. With below 3 command lines, you can obtain an [anndata](https:
 
 
 
-# Install
+# Installation
 scResolve is developed and tested under Python 3.9. Run the following command to install scResolve.
 ````
 conda create -n scresolve python=3.9
@@ -60,7 +60,7 @@ scresolve super-resolution tutorial_quick.toml --save-path tutorial
 
 This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the ``segment_input`` directory. A grey-scaled jpg image in will be saved in the same path.
 
-Finally, run cell segmentation model
+Finally, run cell segmentation model.
 ````
 scresolve segment tutorial.toml --count ./segment_input/section1.tsv --image ./segment_input/section1.jpg
 ````
@@ -139,11 +139,11 @@ There are several important parameters to be considered.
     2. ``min_num_metagenes``: minimum number of metagenes. Ignored if backtrack is `false`.
     Detailed explanations for other parameters can be found [here](https://github.com/ludvb/xfuse#configuring-and-starting-the-run).
 
-**Segment model**   
+**Cell segmentation model**   
     1. `bg_th`: determines which pixels will be treated as background.  
     2. `ws_otsu_classes`: decides how large the detected nuclei by watershed will be. We recommend using a value of 3 or 4.  
 
-# Running scResolve on your Visium data
+# Running scResolve on Visium data
 To run with Visium data, you need to provide paths of below files:  
 ``bc-matrix``: bc-matrix provided by Visium platform(e.g filtered_feature_bc_matrix.h5).   
 ``image``: H&E image. We recommend using high resolution image.  
@@ -173,7 +173,7 @@ scresolve segment CONFIGURATION_FILE --count PATH_TO_SUPER_RESOLUTION_OUTPUT--im
 ````
 
 # Contact
-Contact us if you have any questions:
-Hao Chen: hchen4 at andrew.cmu.edu
-Young Je Lee: youngjel at cs.cmu.edu
+Contact us if you have any questions:</br>
+Hao Chen: hchen4 at andrew.cmu.edu</br>
+Young Je Lee: youngjel at cs.cmu.edu</br>
 Jose Lugo-Martinez: jlugomar at andrew.cmu.edu
