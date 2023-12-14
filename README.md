@@ -8,8 +8,8 @@
 </p>
 
 
-scResolve is a deep learning based pipeline that recovers single cells from low-resolution spatial transcriptomics.  
-It's easy to use: with below 3 command lines, you can recover single cell level gene expression from low-resolution ST data!  
+scResolve is a deep learning based method that recovers spatially resolved single cell expression profiles from low-resolution spatial transcriptomics and paired histology image.  
+It's easy to use. With below 3 command lines, you can obtain gene expression of single cells and their locations from low-resolution spatial transcriptomics data, like Visium. The results will be sotred in [anndata](https://anndata.readthedocs.io/en/latest/) data matrices.
 ``scresolve convert`` - preprocess your data  
 ``scresolve super-resolution `` - run super-resolution model  
 ``scresolve segment`` - get single cells
@@ -208,7 +208,7 @@ There are several important parameters you need to consider.
 **Segment model**   
     - bg_th: Determines which pixels will be treated as background.  
     - ws_otsu_classes: Decides how large the detected nuclei by Watershed will be.We recommend using a value of 3 or 4.  
-    
+
 
 
 
@@ -248,4 +248,3 @@ scresolve segment CONFIGURATION_FILE --count PATH_TO_SUPER_RESOLUTION_OUTPUT--im
 
 # Acknowledgment
 We specially appreciate authors of Xfuse for their generous usage of their model.
-
