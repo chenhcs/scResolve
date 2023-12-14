@@ -15,7 +15,7 @@ It's easy to use. With below 3 command lines, you can obtain gene expression of 
 ``scresolve segment`` - get single cells
 
 # Contents
-- [Install](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
+- [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
 - Tutorial: Running scResolve on Breast cancer ST data
     - [Quick version with running one breast cancer section](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#quick-version-running-one-slide-of-breast-cancer)
     - [Running all 4 breast cancer sections](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#running-all-4-breast-cancer-sections)
