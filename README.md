@@ -59,9 +59,6 @@ Below code will generate the formatted input for super-resolution model
 scresolve convert st --counts section1.tsv --image section1.jpg --transformation-matrix section1-alignment.txt --scale 0.3 --save-path section1
 ````
 We save settings in *.toml file. For the setting of this tutorial, you can see in [link](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial_quick.toml).
-Download the toml file.
-[link Download toml file]
-
 
 Now we can run super-resolution model.
 
