@@ -1,0 +1,49 @@
+[super_resolution_model]
+network_depth = 6
+network_width = 16
+min_counts = 50
+
+[super_resolution_expansion_strategy]
+type = "DropAndSplit"
+[super_resolution_expansion_strategy.DropAndSplit]
+max_metagenes = 50
+
+[super_resolution_optimization]
+batch_size = 3
+epochs = 10000
+learning_rate = 0.0003
+patch_size = 768
+
+[super_resolution_analyses]
+[super_resolution_analyses.metagenes]
+type = "metagenes"
+[super_resolution_analyses.metagenes.options]
+method = "pca"
+
+[super_resolution_analyses.gene_maps]
+type = "gene_maps"
+[super_resolution_analyses.gene_maps.options]
+gene_regex = ".*"
+predict_mean = false
+writer = "tensor"
+
+[super_resolution_backtrack]
+backtrack = true
+min_num_metagenes = 4
+
+[super_resolution_to_segment]
+scale_factor = 10
+
+[segment]
+scale_factor = 10
+
+[slides]
+[slides.section1]
+data = "section1/data.h5"
+image= "section1.jpg"
+
+[slides.section1.covariates]
+section = 1
+
+
+
