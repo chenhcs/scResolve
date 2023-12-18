@@ -13,7 +13,7 @@ scResolve is a deep learning based method that recovers spatially resolved singl
 It's easy to use. With below 3 command lines, you can obtain an [anndata](https://anndata.readthedocs.io/en/latest/) object storing single-cell gene expression and cell locations in tissue from low-resolution spatial transcriptomics data, like Visium.</br>
 ``scresolve convert`` - preprocess your data</br>
 ``scresolve super-resolution `` - run super-resolution to obtain pixel-level expression</br>
-``scresolve segment`` - run cell segmentation to obtain expression profiles of single cells and their</br> locations
+``scresolve segmentation`` - run cell segmentation to obtain expression profiles of single cells and their</br> locations
 
 # Contents
 - [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
@@ -44,25 +44,25 @@ curl -Lo section1.tsv https://www.spatialresearch.org/wp-content/uploads/2016/07
 curl -Lo section1-alignment.txt https://www.spatialresearch.org/wp-content/uploads/2016/07/Layer1_BC_transformation.txt
 ````
 
-The data locations and model parameters are set in the *.toml file [link](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section.
+The data locations and model parameters are set in the [*.toml file](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section.
 
 The command below will generate the formatted input for the model.
 
 ````
 scresolve convert st --counts section1.tsv --image section1.jpg --transformation-matrix section1-alignment.txt --scale 0.3 --save-path section1
 ````
-
+The `scale` parameter
 Next we run super-resolution on the low-resolution spatial transcriptomics and the histology image.
 
 ````
-scresolve super-resolution tutorial_quick.toml --save-path tutorial
+scresolve super-resolution tutorial.toml --save-path tutorial
 ````
 
-This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the ``segment_input`` directory. A grey-scaled jpg image in will be saved in the same path.
+This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the ``segmentation_input`` directory. A grey-scaled jpg image in will be saved in the same path.
 
 Finally, run cell segmentation model.
 ````
-scresolve segment tutorial.toml --count ./segment_input/section1.tsv --image ./segment_input/section1.jpg
+scresolve segmentation tutorial.toml --count ./segmentation_input/section1.tsv --image ./segmentation_input/section1.jpg
 ````
 
 This step will identify individual cells from the high-resolution expression maps and the histology image. An anndata object storing the expression profiles and locations of cells will be saved.
@@ -106,18 +106,13 @@ writer = "tensor"
 
 [super_resolution_backtrack]
 backtrack = true
-min_num_metagenes = 4
+min_num_metagenes = 20
 
-[super_resolution_to_segment]
-scale_factor = 10
-
-[segment]
-prealigned = false
-bin_size = 10
+[segmentation]
 ws_otsu_classes = 4
-bg_th = 10
+bg_th = 100
 epochs = 100
-patch_size = 0
+patch_size = 2024
 
 [slides]
 [slides.section1]
@@ -125,12 +120,6 @@ data = "path_to_h5"
 image= "path_to_img"
 [slides.section1.covariates]
 section = 1
-
-[slides.section2]
-data = "path_to_h5"
-image= "path_to_img"
-[slides.section2.covariates]
-section = 2
 ````
 There are several important parameters to be considered.  
 
@@ -151,10 +140,6 @@ To run with Visium data, you need to provide paths of below files:
 ``scale-factors``: Scale factor provided by Visium platform. A Json format file.  
 ``mask-file``: We recommend providing a custom mask for super-resolution model. The each pixel in the mask file should be 0 if background, 1 if foreground, 2 if likely background and 4 if likely foreground.  
 
-It is recommended using higher ``scale`` as possible. However, increasing this value requires high GPU resource and will take longer time.  
-
-For the configuration file, you can download default here  
-
 Once you determine above considerations, simply run  
 
 ````
@@ -162,6 +147,7 @@ scresolve convert visium --bc-matrix PATH --image PATH --tissue-positions PATH -
 ````
 where each PATH corresponds to the input file.
 
+For the configuration file, you can download default here  
 Then run  
 ````
 scresolve super-resolution CONFIGURATION_FILE --save-path SAVE_PATH
@@ -169,7 +155,7 @@ scresolve super-resolution CONFIGURATION_FILE --save-path SAVE_PATH
 
 Finally, run  
 ````
-scresolve segment CONFIGURATION_FILE --count PATH_TO_SUPER_RESOLUTION_OUTPUT--image PATH_TO_IMAGE_OUTPUT
+scresolve segmentation CONFIGURATION_FILE --count PATH_TO_SUPER_RESOLUTION_OUTPUT--image PATH_TO_IMAGE_OUTPUT
 ````
 
 # Contact

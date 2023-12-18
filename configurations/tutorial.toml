@@ -10,7 +10,7 @@ max_metagenes = 50
 
 [super_resolution_optimization]
 batch_size = 3
-epochs = 10000
+epochs = 100000
 learning_rate = 0.0003
 patch_size = 768
 
@@ -29,13 +29,7 @@ writer = "tensor"
 
 [super_resolution_backtrack]
 backtrack = true
-min_num_metagenes = 4
-
-[super_resolution_to_segment]
-scale_factor = 10
-
-[segment]
-scale_factor = 10
+min_num_metagenes = 20
 
 [slides]
 [slides.section1]
@@ -44,6 +38,3 @@ image= "section1.jpg"
 
 [slides.section1.covariates]
 section = 1
-
-
-
