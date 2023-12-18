@@ -147,7 +147,7 @@ scresolve convert visium --bc-matrix PATH --image PATH --tissue-positions PATH -
 ````
 where each PATH specifies each input file.
 
-For the configuration file, you can download the default one from [here](https://github.com/chenhcs/scResolve/raw/main/configurations/configuration.toml).
+For the configuration file, you can download the default one from [here](https://github.com/chenhcs/scResolve/blob/main/configurations/configurations.toml).
 Then use the following command to run super resolution.
 ````
 scresolve super-resolution CONFIGURATION_FILE --save-path SAVE_PATH

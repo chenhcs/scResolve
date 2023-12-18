@@ -32,12 +32,14 @@ backtrack = true
 min_num_metagenes = 20
 
 [segmentation]
-scale_factor = 10
+ws_otsu_classes = 4
+bg_th = 100
+epochs = 100
+patch_size = 1000
 
 [slides]
 [slides.section1]
-data = "section1/data.h5"
-image= "section1.jpg"
-
+data = "path_to_h5"
+image= "path_to_img"
 [slides.section1.covariates]
 section = 1
