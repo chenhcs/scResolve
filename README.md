@@ -49,7 +49,7 @@ The command below will generate the formatted input for the model.
 ````
 scresolve convert st --counts section1.tsv --image section1.jpg --transformation-matrix section1-alignment.txt --scale 0.3 --save-path section1
 ````
-The `scale` parameter controls the resizing of the original histology image. The height and width of the image will be adjusted to the percentage specified by the `scale` parameter. A larger value of the parameter can lead to more accurate cell segmentation while will require more computing resources.
+The `scale` parameter controls the resizing of the original histology image. The height and width of the image will be adjusted to the percentage specified by the `scale` parameter. A larger value of the parameter can lead to more accurate cell segmentation in the following steps while will require more computing resources. A HDF5 file will be saved in the directory specified by `--save-path`.
 
 Next we run super-resolution on the low-resolution spatial transcriptomics and the histology image.
 
@@ -57,7 +57,7 @@ Next we run super-resolution on the low-resolution spatial transcriptomics and t
 scresolve super-resolution tutorial.toml --save-path tutorial
 ````
 
-The data locations and model parameters are set in the [*.toml file](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section.</br>
+The location of the HDF5 file and model parameters are set in the [*.toml file](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section.</br>
 This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the ``segmentation_input`` directory.
 
 Finally, run cell segmentation on the super-resolution gene expression maps using the command below.
@@ -117,7 +117,6 @@ patch_size = 2024
 [slides]
 [slides.section1]
 data = "path_to_h5"
-image= "path_to_img"
 [slides.section1.covariates]
 section = 1
 ````

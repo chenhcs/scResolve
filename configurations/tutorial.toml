@@ -34,7 +34,5 @@ min_num_metagenes = 20
 [slides]
 [slides.section1]
 data = "section1/data.h5"
-image= "section1.jpg"
-
 [slides.section1.covariates]
 section = 1
