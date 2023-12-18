@@ -16,11 +16,11 @@ It's easy to use. With below 3 command lines, you can obtain an [anndata](https:
 ``scresolve segmentation`` - run cell segmentation to obtain expression profiles of single cells and their</br> locations
 
 # Contents
-- [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#install)
-- [Tutorial: Run scResolve on breast cancer dataset from ST platform](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#quick-version-running-one-slide-of-breast-cancer)
+- [Installation](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#installation)
+- [Tutorial: Run scResolve on the breast cancer dataset from ST platform](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#tutorial-run-scresolve-on-the-breast-cancer-dataset-from-st-platform)
 - [Configuration](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#configuration)
-- [Running scResolve on Visium data](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#running-scresolve-on-your-visium-data)
-- [Contact]()
+- [Running scResolve on Visium data](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#running-scresolve-on-visium-data)
+- [Contact](https://github.com/chenhcs/scResolve/tree/main?tab=readme-ov-file#contact)
 
 
 
@@ -33,7 +33,7 @@ pip install git+https://github.com/chenhcs/scResolve@main
 ````
 Once installation is completed, verify the installation by command ``scresolve``.
 
-# Tutorial: Run scResolve on breast cancer dataset from ST platform
+# Tutorial: Run scResolve on the breast cancer dataset from ST platform
 Here we provide a tutorial on applying scResolve to the breast cancer dataset generated from the ST platform and reproducing the results from our work.
 
 There are four ST sections in the dataset. Download the data from the link [https://www.spatialresearch.org/resources-published-datasets/doi-10-1126science-aaf2403/](https://www.spatialresearch.org/resources-published-datasets/doi-10-1126science-aaf2403/), or simply use the commands below. We will first use one section as an example, and the same steps can be repeated on the other three sections.
