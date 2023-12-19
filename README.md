@@ -128,7 +128,7 @@ There are several important parameters to be considered.
 
 **Cell segmentation model**   
     1. `bg_th`: threshold for background pixels. Pixels with values smaller than this threshold will be treated as background.  
-    2. `ws_otsu_classes`: controls the sizes of detected nuclei by watershed. A higher value results in larger nuclei being detected through watershed
+    2. `ws_otsu_classes`: controls the sizes of detected nuclei by watershed. A higher value results in larger nuclei being detected through watershed.  
     3. `patch_size`: the size of the patches the section will be split into (pixels x pixels). Cell segmentation will be performed patch by patch.
 
 # Running scResolve on Visium data
