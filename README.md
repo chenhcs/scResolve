@@ -112,7 +112,7 @@ min_num_metagenes = 20
 ws_otsu_classes = 4
 bg_th = 100
 epochs = 100
-patch_size = 2024
+patch_size = 1000
 
 [slides]
 [slides.section1]

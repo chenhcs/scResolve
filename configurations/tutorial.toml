@@ -31,6 +31,12 @@ writer = "tensor"
 backtrack = true
 min_num_metagenes = 20
 
+[segmentation]
+ws_otsu_classes = 4
+bg_th = 100
+epochs = 100
+patch_size = 2024
+
 [slides]
 [slides.section1]
 data = "section1/data.h5"
