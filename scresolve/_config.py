@@ -271,17 +271,6 @@ _ANNOTATED_CONFIG = OrderedDict(
             Item(
                 value=OrderedDict(
                     [
-                        (
-                            "scale_factor",
-                            Item(
-                                value=10,
-                                comment=" ".join(
-                                    [
-                                        "Scale factor",
-                                    ]
-                                ),
-                            ),
-                        ),
                        (
                            "convert_grey",
                            Item(
@@ -293,7 +282,7 @@ _ANNOTATED_CONFIG = OrderedDict(
                                    ]
                                ),
                            ),
-                       ),                        
+                       ),
 
                     ]
                 )
@@ -301,7 +290,7 @@ _ANNOTATED_CONFIG = OrderedDict(
         ),
 
 
-        
+
     ]
 )
 

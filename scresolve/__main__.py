@@ -453,7 +453,7 @@ def super_resolution(
                     f"Slide {name} does not have a `image` attribute"
                 ) from exc
             config["slides"][name]["image"] = _expand_path(data_path)
-            
+
 
         with open(first_unique_filename("merged_config.toml"), "w") as f:
             f.write(tomlkit.dumps(config))
@@ -616,8 +616,8 @@ def super_resolution(
                 slide_options=slide_options,
                 backtrack = config["super_resolution_backtrack"]["backtrack"],
                 min_num_metagenes= config["super_resolution_backtrack"]["min_num_metagenes"],
-                config=config                
-                
+                config=config
+
             )
 
 
@@ -633,18 +633,16 @@ cli.add_command(super_resolution)
 @click.option("--image", type=str, required=True)
 @click.option("--output_path", type=str, required=True)
 # @click.option("--session", type=click.File("rb"))
-@click.option("--align", default=None)
 @click.option("--ws_otsu_index", default=1)
 @click.option("--n_neighbor", default=50)
-@click.option("--dia_estimate", default=15)
-@click.option("--min_sz", default=200)
+@click.option("--dia_estimate", default=20)
+@click.option("--min_sz", default=500)
 @_init
-def segment(
+def segmentation(
     project_file,
     count,
     image,
     output_path,
-    align,
     ws_otsu_index,
     n_neighbor,
     dia_estimate,
@@ -694,15 +692,12 @@ def segment(
     print('savepath',output_path)
     print('count',count)
     print('image',image)
-    
+
     run_segment.segment_cells(
         output_path,
         count,
         image,
-        prealigned=config["segment"]["prealigned"],
-        align=align,
         patch_size=config["segment"]["patch_size"],
-        bin_size=config["segment"]["bin_size"],
         ws_otsu_classes=config["segment"]["ws_otsu_classes"],
         ws_otsu_index=1,
         bg_th=config["segment"]["bg_th"],

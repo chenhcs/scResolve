@@ -2,11 +2,95 @@ import math
 import numpy as np
 from .src import preprocessing, transformer, postprocessing
 
-def segment_cells(save_path,bin_file, image_file, prealigned=False, align=None, patch_size=0, bin_size=3, ws_otsu_classes=4, ws_otsu_index=1, bg_th=10, n_neighbor=50, epochs=100, dia_estimate=15, min_sz=200):
+def write_to_anndata(save_path, bin_file):
+    df = pd.read_table(bin_file)
+    minx = df['x'].min()
+    miny = df['y'].min()
+
+    genes = list(set(df['geneID'].values.tolist()))
+    geneid = {}
+    for i,gene in enumerate(genes):
+        geneid[gene] = i
+    print(len(genes))
+
+    pos2cell = {}
+    cell2pos_x = {}
+    cell2pos_y = {}
+    all_cells = set()
+    numcells = 0
+    files = glob.glob(save_path + '/spot2cell*.txt')
+    files.sort()
+    for file in files:
+        print(file)
+        fr = open(file)
+        startx = int(file.split('_')[-1].split(':')[0])
+        starty = int(file.split('_')[-1].split(':')[1])
+        for line in fr:
+            pos, cell = line.split()
+            posx, posy = pos.split(':')
+            pos = str(int(posx) + startx) + ':' + str(int(posy) + starty)
+            pos2cell[pos] = int(cell.split('.')[0]) + numcells
+            cell = int(cell.split('.')[0]) + numcells
+            all_cells.add(cell)
+            cell = 'cell_' + str(cell)
+            if cell not in cell2pos_x:
+                cell2pos_x[cell] = [int(pos.split(':')[0])]
+                cell2pos_y[cell] = [int(pos.split(':')[1])]
+            else:
+                cell2pos_x[cell].append(int(pos.split(':')[0]))
+                cell2pos_y[cell].append(int(pos.split(':')[1]))
+        numcells = np.max(list(all_cells))
+        print(numcells)
+
+    genecnt = len(genes)
+    cellexp = np.zeros((numcells + 1, genecnt))
+    with open(bin_file) as fr:
+        header = fr.readline()
+        line_cnt = 0
+        for line in fr:
+            line_cnt += 1
+            gene, x, y, count = line.split()
+            x = str(int(x) - minx)
+            y = str(int(y) - miny)
+            if gene not in geneid:
+                continue
+            if x + ':' + y in pos2cell:
+                cellexp[pos2cell[x + ':' + y], geneid[gene]] += int(count)
+            if line_cnt % 10000 == 0:
+                print(line_cnt)
+
+    cellidx = np.where(np.sum(cellexp, axis=1) > 0)[0]
+    cellexp = cellexp[cellidx]
+
+    adata = ad.AnnData(
+        cellexp,
+        obs=pd.DataFrame(index=['cell_' + str(i) for i in range(cellexp.shape[0])]),
+        var=pd.DataFrame(index=genes),
+    )
+
+    posx = []
+    posy = []
+    for idx in cellidx:
+        if idx in cell2pos_x:
+            posx.append(np.mean(cell2pos_x[idx]))
+            posy.append(np.mean(cell2pos_y[idx]))
+        else:
+            posx.append(0)
+            posy.append(0)
+    adata.obs['x'] = posx
+    adata.obs['y'] = posy
+
+    adata.write_h5ad(save_path + '/cells_exp_loc.h5ad')
+
+def segment_cells(save_path, bin_file, image_file, patch_size=0 ws_otsu_classes=4, ws_otsu_index=1, bg_th=100, epochs=100, dia_estimate=20, min_sz=500):
+    prealigned=True
+    align=None
+    bin_size=5
+    n_neighbor=50
     if patch_size == 0:
-        preprocessing.preprocess(save_path,bin_file, image_file, prealigned, align, 0, 0, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
-        transformer.train(save_path,0, 0, patch_size, epochs)
-        postprocessing.postprocess(save_path,0, 0, patch_size, bin_size, dia_estimate, min_sz)
+        preprocessing.preprocess(save_path, bin_file, image_file, prealigned, align, 0, 0, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
+        transformer.train(save_path, 0, 0, patch_size, epochs)
+        postprocessing.postprocess(save_path, 0, 0, patch_size, bin_size, dia_estimate, min_sz)
     else:
         r_all = []
         c_all = []
@@ -24,11 +108,10 @@ def segment_cells(save_path,bin_file, image_file, prealigned=False, align=None, 
             for startc in range(0, cmax, patch_size):
                 try:
                     print('Processing the patch ' + str(startr) + ':' + str(startc) + '...')
-                    # if startr <= 4000 or startc == 8000:
-                    #     continue
-                    preprocessing.preprocess(save_path,bin_file, image_file, prealigned, align, startr, startc, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
-                    transformer.train(save_path,startr, startc, patch_size, epochs)
-                    postprocessing.postprocess(save_path,startr, startc, patch_size, bin_size, dia_estimate, min_sz)
+                    preprocessing.preprocess(save_path, bin_file, image_file, prealigned, align, startr, startc, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
+                    transformer.train(save_path, startr, startc, patch_size, epochs)
+                    postprocessing.postprocess(save_path, startr, startc, patch_size, bin_size, dia_estimate, min_sz)
                 except Exception as e:
                     print(e)
                     print('Patch ' + str(startr) + ':' + str(startc) + ' failed. This could be due to no nuclei detected by Watershed or too few RNAs in the patch.')
+    write_to_anndata(save_path)

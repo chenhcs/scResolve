@@ -159,14 +159,14 @@ def run_experiment(dataset, startx, starty, patchsize, model, x_train, x_train_p
     pred_binary_train = np.vstack(pred_binary_train_all)
     #for i in range(len(y_train_)):
     #    print(y_train_[i], pred_binary_train[i], pred_centers_train[i])
-    x_train_pos__ = np.load(dataset + '_data/x_train_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    x_train_pos__ = np.load(dataset + '/data/x_train_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     x_train_pos__ = x_train_pos__['x_train_pos']
-    x_test_pos_ = np.load(dataset + '_data/x_test_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    x_test_pos_ = np.load(dataset + '/data/x_test_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     x_test_pos_ = x_test_pos_['x_test_pos']
     #print(y_train_.shape, x_train_pos__.shape)
 
     print('Write prediction results...')
-    with open(dataset + '_results/spot_prediction_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.txt', 'w') as fw:
+    with open(dataset + '/results/spot_prediction_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.txt', 'w') as fw:
         for i in range(len(x_train_pos__)):
             fw.write(str(x_train_pos__[i][0][0]) + '\t' + str(x_train_pos__[i][0][1]) + '\t' + str(pred_binary_train[i][0]) + '\t' + ':'.join([str(c) for c in pred_centers_train[i]]) + '\n')
         for i in range(len(x_test_pos_)):
@@ -178,16 +178,16 @@ def train(dataset, startx, starty, patchsize, epochs):
     starty = str(starty)
     patchsize = str(patchsize)
     try:
-        os.mkdir(dataset + '_results/')
+        os.mkdir(dataset + '/results/')
     except FileExistsError:
         print('results folder exists.')
-    x_train_ = np.load(dataset + '_data/x_train_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    x_train_ = np.load(dataset + '/data/x_train_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     x_train_ = x_train_['x_train'].astype(np.float32)
-    x_train_pos_ = np.load(dataset + '_data/x_train_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    x_train_pos_ = np.load(dataset + '/data/x_train_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     x_train_pos_ = x_train_pos_['x_train_pos'].astype(np.int32)
-    y_train_ = np.load(dataset + '_data/y_train_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    y_train_ = np.load(dataset + '/data/y_train_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     y_train_ = y_train_['y_train']
-    y_binary_train_ = np.load(dataset + '_data/y_binary_train_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    y_binary_train_ = np.load(dataset + '/data/y_binary_train_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     y_binary_train_ = y_binary_train_['y_binary_train'].astype(np.int32)
     print(x_train_.shape, x_train_pos_.shape, y_train_.shape, y_binary_train_.shape)
 
@@ -205,9 +205,9 @@ def train(dataset, startx, starty, patchsize, epochs):
         y_binary_train_ = np.concatenate((y_binary_train_, y_binary_train_[neg_upsample]), axis=0)
         print(x_train_.shape, x_train_pos_.shape, y_train_.shape, y_binary_train_.shape)
 
-    x_test = np.load(dataset + '_data/x_test_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    x_test = np.load(dataset + '/data/x_test_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     x_test = x_test['x_test'].astype(np.float32)
-    x_test_pos = np.load(dataset + '_data/x_test_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
+    x_test_pos = np.load(dataset + '/data/x_test_pos_' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.npz')
     x_test_pos = x_test_pos['x_test_pos'].astype(np.int32)
 
     class_num = 16
