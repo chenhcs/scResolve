@@ -57,12 +57,11 @@ Next we run super-resolution on the low-resolution spatial transcriptomics and t
 scresolve super-resolution tutorial.toml --save-path tutorial
 ````
 
-The location of the HDF5 file and model parameters are set in the [*.toml file](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section.</br>
-This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the ``segmentation_input`` directory.
+The location of the HDF5 file and model parameters are set in the [*.toml file](https://github.com/chenhcs/scResolve/raw/main/configurations/tutorial.toml), which will be discussed in the next section. This process will generate pixel-level gene expression maps, which will be stored in a tsv file within the directory specified by `--save-path`.
 
 Finally, run cell segmentation on the super-resolution gene expression maps using the command below.
 ````
-scresolve segmentation tutorial.toml --count ./segmentation_input/section1.tsv --image ./segmentation_input/section1.jpg --output_path ./results
+scresolve segmentation tutorial.toml --count ./tutorial/section1.tsv --image ./tutorial/section1.jpg --output_path ./results
 ````
 
 An anndata object storing the expression profiles and locations of cells will be saved in the directory specified by `--output_path`.
