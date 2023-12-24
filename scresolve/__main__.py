@@ -708,7 +708,7 @@ def segmentation(
 
 
 
-cli.add_command(segment)
+cli.add_command(segmentation)
 
 if __name__ == "__main__":
     cli()  # pylint: disable=no-value-for-parameter
