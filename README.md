@@ -31,6 +31,7 @@ conda create -n scresolve python=3.9
 conda activate scresolve
 pip install git+https://github.com/chenhcs/scResolve@main
 ````
+Installation takes around 4 minutes and 30 seconds.
 Once installation is completed, verify the installation by command ``scresolve``.
 
 # Tutorial: Run scResolve on the breast cancer dataset from ST platform
