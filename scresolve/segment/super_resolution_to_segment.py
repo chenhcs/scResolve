@@ -16,7 +16,7 @@ from pathlib import Path
 import time
 import logging
 from datetime import datetime
-from PIL import Image
+from PIL import Image, ImageOps
 import h5py
 import pandas as pd
 Image.MAX_IMAGE_PIXELS = None
