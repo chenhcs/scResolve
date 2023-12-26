@@ -135,7 +135,8 @@ def super_resolution_to_segment_converter(current_path,config):
                 print(img)
                 im = Image.fromarray(img)
             width, height = im.size
-            im = im.resize((width * 5, height * 5))
+            width, height = width*5, height*5
+            im = im.resize((width, height))
             if convert_grey==True:
                 im = ImageOps.grayscale(im)
                 im = ImageOps.invert(im)
