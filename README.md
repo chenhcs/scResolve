@@ -62,7 +62,7 @@ The location of the HDF5 file and model parameters are set in the [*.toml file](
 
 Finally, run cell segmentation on the super-resolution gene expression maps using the command below.
 ````
-scresolve segmentation tutorial.toml --count ./tutorial/section1.tsv --image ./tutorial/section1.jpg --output_path ./results
+scresolve segmentation tutorial.toml --count ./tutorial/segment_input/section1.tsv --image ./tutorial/segment_input/section1.jpg --output_path ./results
 ````
 
 An anndata object storing the expression profiles and locations of cells will be saved in the directory specified by `--output_path`.
