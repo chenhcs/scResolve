@@ -1,5 +1,8 @@
 import math
 import numpy as np
+import pandas as pd
+import glob
+import anndata as ad
 from .src import preprocessing, transformer, postprocessing
 
 def write_to_anndata(save_path, bin_file):
@@ -82,7 +85,7 @@ def write_to_anndata(save_path, bin_file):
 
     adata.write_h5ad(save_path + '/cells_exp_loc.h5ad')
 
-def segment_cells(save_path, bin_file, image_file, patch_size=0, ws_otsu_classes=4, ws_otsu_index=1, bg_th=100, epochs=100, dia_estimate=20, min_sz=500):
+def segment_cells(save_path, bin_file, image_file, patch_size=0, ws_otsu_classes=4, ws_otsu_index=1, bg_th=100, n_neighbor=50, epochs=100, dia_estimate=20, min_sz=500):
     prealigned=True
     align=None
     bin_size=5
@@ -114,4 +117,4 @@ def segment_cells(save_path, bin_file, image_file, patch_size=0, ws_otsu_classes
                 except Exception as e:
                     print(e)
                     print('Patch ' + str(startr) + ':' + str(startc) + ' failed. This could be due to no nuclei detected by Watershed or too few RNAs in the patch.')
-    write_to_anndata(save_path)
+    write_to_anndata(save_path,bin_file)
