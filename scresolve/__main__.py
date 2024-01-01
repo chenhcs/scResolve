@@ -677,7 +677,7 @@ def segmentation(
 
         ##
         try:
-            data_path = slide["image"]
+            data_path = image
         except KeyError as exc:
             raise RuntimeError(
                 f"Slide {name} does not have a `image` attribute"
@@ -697,12 +697,12 @@ def segmentation(
         output_path,
         count,
         image,
-        patch_size=config["segment"]["patch_size"],
-        ws_otsu_classes=config["segment"]["ws_otsu_classes"],
+        patch_size=config["segmentation"]["patch_size"],
+        ws_otsu_classes=config["segmentation"]["ws_otsu_classes"],
         ws_otsu_index=1,
-        bg_th=config["segment"]["bg_th"],
+        bg_th=config["segmentation"]["bg_th"],
         n_neighbor=n_neighbor,
-        epochs=config["segment"]["epochs"],
+        epochs=config["segmentation"]["epochs"],
         dia_estimate=dia_estimate,
         min_sz=min_sz)
 
