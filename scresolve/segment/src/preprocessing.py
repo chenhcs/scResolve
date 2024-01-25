@@ -45,15 +45,19 @@ def preprocess(dataset, bin_file, image_file, prealigned, align, startx, starty,
 
     try:
         os.mkdir(dataset)
+    except FileExistsError:
+        print('fig folder exists')
+
+    try:
         os.mkdir(dataset + '/fig/')
     except FileExistsError:
         print('fig folder exists')
 
     try:
-        os.mkdir(dataset)
         os.mkdir(dataset + '/data/')
     except FileExistsError:
-        print('fig folder exists')
+        print('fig folder exists')    
+
 
     plt.savefig(dataset + '/fig/alignment' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.png')
 

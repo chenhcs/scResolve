@@ -21,7 +21,7 @@ def write_to_anndata(save_path, bin_file):
     cell2pos_y = {}
     all_cells = set()
     numcells = 0
-    files = glob.glob(save_path + '/spot2cell*.txt')
+    files = glob.glob(save_path + '/results/spot2cell*.txt')
     files.sort()
     for file in files:
         print(file)
