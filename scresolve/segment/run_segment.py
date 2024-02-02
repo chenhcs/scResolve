@@ -11,10 +11,11 @@ def write_to_anndata(save_path, bin_file):
     miny = df['y'].min()
 
     genes = list(set(df['geneID'].values.tolist()))
+    genes.sort()
     geneid = {}
     for i,gene in enumerate(genes):
         geneid[gene] = i
-    print(len(genes))
+    print('# of genes:', len(genes))
 
     pos2cell = {}
     cell2pos_x = {}
@@ -24,7 +25,7 @@ def write_to_anndata(save_path, bin_file):
     files = glob.glob(save_path + '/results/spot2cell*.txt')
     files.sort()
     for file in files:
-        print(file)
+        print('processing:', file)
         fr = open(file)
         startx = int(file.split('_')[-1].split(':')[0])
         starty = int(file.split('_')[-1].split(':')[1])
@@ -43,7 +44,6 @@ def write_to_anndata(save_path, bin_file):
                 cell2pos_x[cell].append(int(pos.split(':')[0]))
                 cell2pos_y[cell].append(int(pos.split(':')[1]))
         numcells = np.max(list(all_cells))
-        print(numcells)
 
     genecnt = len(genes)
     cellexp = np.zeros((numcells + 1, genecnt))
@@ -59,8 +59,6 @@ def write_to_anndata(save_path, bin_file):
                 continue
             if x + ':' + y in pos2cell:
                 cellexp[pos2cell[x + ':' + y], geneid[gene]] += int(count)
-            if line_cnt % 10000 == 0:
-                print(line_cnt)
 
     cellidx = np.where(np.sum(cellexp, axis=1) > 0)[0]
     cellexp = cellexp[cellidx]
@@ -74,9 +72,9 @@ def write_to_anndata(save_path, bin_file):
     posx = []
     posy = []
     for idx in cellidx:
-        if idx in cell2pos_x:
-            posx.append(np.mean(cell2pos_x[idx]))
-            posy.append(np.mean(cell2pos_y[idx]))
+        if 'cell_' + str(idx) in cell2pos_x:
+            posx.append(np.mean(cell2pos_x['cell_' + str(idx)]))
+            posy.append(np.mean(cell2pos_y['cell_' + str(idx)]))
         else:
             posx.append(0)
             posy.append(0)

@@ -53,7 +53,7 @@ def super_resolution(
     backtrack: bool = CONFIG["super_resolution_backtrack"].value["backtrack"].value,
     min_num_metagenes: int = CONFIG["super_resolution_backtrack"].value["min_num_metagenes"].value,
     config=CONFIG
-    
+
 ):
     r"""Runs an analysis"""
 
@@ -206,12 +206,12 @@ def super_resolution(
     if backtrack==True:
         num_metagene_satisfied=False
 
-        
+
         with load_session('final.session'):
-            
+
             metagenes = xfuse.get_experiment("ST").metagenes
             if len(metagenes)>=min_num_metagenes:
-            
+
                 for name, (analysis_type, options) in analyses.items():
                     if analysis_type in _analyses:
                         log(INFO, 'Running analysis "%s"', name)
@@ -223,19 +223,33 @@ def super_resolution(
                     else:
                         warnings.warn(f'Unknown analysis "{analysis_type}"')
                 num_metagene_satisfied=True
-                
+
             if num_metagene_satisfied==False:
                 stack=1
                 while True:
                     cur_epoch='%08d' % (epochs-stack*purge_interval)
+
+                    if epochs-stack*purge_interval <= 0:
+                        for name, (analysis_type, options) in analyses.items():
+                            if analysis_type in _analyses:
+                                log(INFO, 'Running analysis "%s"', name)
+                                with Session(
+                                    model=xfuse, dataloader=dataloader, genes=genes, messengers=[],
+                                ):
+                                    with chdir(f"analyses/final/{name}"):
+                                        _analyses[analysis_type].function(**options)
+                            else:
+                                warnings.warn(f'Unknown analysis "{analysis_type}"')
+                        break
+
                     recent_session=os.path.join(os.getcwd(),'checkpoints','epoch-'+cur_epoch+'.session')
-                    
+
                     with load_session(recent_session):
                         print('Loading '+recent_session)
                         metagenes = xfuse.get_experiment("ST").metagenes
                         print('num metagenes: ',len(metagenes))
                         if len(metagenes)>=min_num_metagenes:
-                        
+
                             for name, (analysis_type, options) in analyses.items():
                                 if analysis_type in _analyses:
                                     log(INFO, 'Running analysis "%s"', name)
@@ -250,16 +264,5 @@ def super_resolution(
                     if num_metagene_satisfied==True:
                         break
                     stack+=1
-                    
-                    if epochs-stack*purge_interval <=0:
-                        raise
+
     super_resolution_to_segment_converter(os.getcwd(),config)
-                                
-        
-
-
-
-
-
-
-

@@ -56,7 +56,7 @@ def preprocess(dataset, bin_file, image_file, prealigned, align, startx, starty,
     try:
         os.mkdir(dataset + '/data/')
     except FileExistsError:
-        print('fig folder exists')    
+        print('fig folder exists')
 
 
     plt.savefig(dataset + '/fig/alignment' + startx + ':' + starty + ':' + patchsize + ':' + patchsize + '.png')
@@ -97,6 +97,9 @@ def preprocess(dataset, bin_file, image_file, prealigned, align, startx, starty,
             else:
                 watershed2x[adatasub.layers['watershed_labels'][i, j]] = [i]
                 watershed2y[adatasub.layers['watershed_labels'][i, j]] = [j]
+
+    if len(watershed2x) == 0:
+        return
 
     watershed2center = {}
     sizes = []

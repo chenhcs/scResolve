@@ -445,16 +445,6 @@ def super_resolution(
                 ) from exc
             config["slides"][name]["data"] = _expand_path(data_path)
 
-            ##
-            #try:
-            #    data_path = slide["image"]
-            #except KeyError as exc:
-            #    raise RuntimeError(
-            #        f"Slide {name} does not have a `image` attribute"
-            #    ) from exc
-            #config["slides"][name]["image"] = _expand_path(data_path)
-
-
         with open(first_unique_filename("merged_config.toml"), "w") as f:
             f.write(tomlkit.dumps(config))
 
@@ -674,16 +664,6 @@ def segmentation(
                 f"Slide {name} does not have a `data` attribute"
             ) from exc
         config["slides"][name]["data"] = _expand_path(data_path)
-
-        ##
-        #try:
-        #    data_path = image
-        #except KeyError as exc:
-        #    raise RuntimeError(
-        #        f"Slide {name} does not have a `image` attribute"
-        #    ) from exc
-        #config["slides"][name]["image"] = _expand_path(data_path)
-
 
     output_path=_expand_path(output_path)
     count = _expand_path(count)
