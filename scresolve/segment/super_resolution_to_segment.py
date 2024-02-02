@@ -41,7 +41,7 @@ def super_resolution_to_segment_converter(current_path,config):
     logging.info('start time:'+str(startTime))
 
     scale_factor=5
-    convert_grey=config["super_resolution_to_segment"].value["convert_grey"]
+    convert_grey=config["super_resolution_to_segment"]["convert_grey"]
     x_start,y_start = 0,0
     x_end,y_end=None,None
     pt_start,pt_end = 0, None
