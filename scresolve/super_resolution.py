@@ -245,6 +245,7 @@ def super_resolution(
                     recent_session=os.path.join(os.getcwd(),'checkpoints','epoch-'+cur_epoch+'.session')
 
                     with load_session(recent_session):
+                        xfuse=get("model")
                         print('Loading '+recent_session)
                         metagenes = xfuse.get_experiment("ST").metagenes
                         print('num metagenes: ',len(metagenes))
