@@ -26,18 +26,22 @@ It's easy to use. With below 3 command lines, you can obtain an [anndata](https:
 
 # Installation
 scResolve is developed and tested under Python 3.9. Run the following command to install scResolve.
+
 Update: We noticed possible runtime error depending on the configuration of the machine. So here we provide stable version with Python=3.8. In addition, Pytorch=1.11 should be mannually installed. 
 ````
 conda create -n scresolve python=3.8
 conda activate scresolve
 pip install git+https://github.com/chenhcs/scResolve@main
 ````
+
 After above commands, install Pytorch=1.11 that suits to your machine configuration(Window/Linux and CUDA).
+
 For CUDA 11.3, you can use below command:
 ````
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
 ````
 For other configuration of Pytorch=1.11, please check below webpage:
+
 [https://pytorch.org/get-started/previous-versions/]
 
 Installation takes around 4 minutes and 30 seconds.
