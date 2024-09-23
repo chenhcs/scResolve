@@ -34,9 +34,9 @@ pip install git+https://github.com/chenhcs/scResolve@main
 ````
 After above commands, install Pytorch=1.11 that suits to your machine configuration(Window/Linux and CUDA).
 For CUDA 11.3, you can use below command:
-''''
+````
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
-'''
+````
 For other configuration of Pytorch=1.11, please check below webpage:
 [https://pytorch.org/get-started/previous-versions/]
 
