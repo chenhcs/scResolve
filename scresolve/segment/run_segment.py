@@ -81,9 +81,9 @@ def write_to_anndata(save_path, bin_file):
     adata.obs['x'] = posx
     adata.obs['y'] = posy
 
-    adata.write_h5ad(save_path + '/cells_exp_loc.h5ad')
+    adata.write_h5ad(save_path + '/scresolve_output.h5ad')
 
-def segment_cells(save_path, bin_file, image_file, patch_size=0, ws_otsu_classes=4, ws_otsu_index=1, bg_th=100, n_neighbor=50, epochs=100, dia_estimate=20, min_sz=500):
+def segment_cells(save_path, bin_file, image_file, patch_size=0, ws_otsu_classes=4, ws_otsu_index=1, bg_th=100, n_neighbor=50, epochs=100, dia_estimate=20, min_sz=500,cluster_index='-1'):
     prealigned=True
     align=None
     bin_size=5
@@ -104,15 +104,38 @@ def segment_cells(save_path, bin_file, image_file, patch_size=0, ws_otsu_classes
         rmax = np.max(r_all) - np.min(r_all)
         cmax = np.max(c_all) - np.min(c_all)
         n_patches = math.ceil(rmax / patch_size) * math.ceil(cmax / patch_size)
-        print(str(n_patches) + ' patches will be processed.')
-        for startr in range(0, rmax, patch_size):
-            for startc in range(0, cmax, patch_size):
-                try:
-                    print('Processing the patch ' + str(startr) + ':' + str(startc) + '...')
-                    preprocessing.preprocess(save_path, bin_file, image_file, prealigned, align, startr, startc, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
-                    transformer.train(save_path, startr, startc, patch_size, epochs)
-                    postprocessing.postprocess(save_path, startr, startc, patch_size, bin_size, dia_estimate, min_sz)
-                except Exception as e:
-                    print(e)
-                    print('Patch ' + str(startr) + ':' + str(startc) + ' failed. This could be due to no nuclei detected by Watershed or too few RNAs in the patch.')
-    write_to_anndata(save_path,bin_file)
+        if cluster_index=='-1':
+            print(str(n_patches) + ' patches will be processed.')
+            for startr in range(0, rmax, patch_size):
+                for startc in range(0, cmax, patch_size):
+                    try:
+                        print('Processing the patch ' + str(startr) + ':' + str(startc) + '...')
+                        preprocessing.preprocess(save_path, bin_file, image_file, prealigned, align, startr, startc, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
+                        transformer.train(save_path, startr, startc, patch_size, epochs)
+                        postprocessing.postprocess(save_path, startr, startc, patch_size, bin_size, dia_estimate, min_sz)
+                    except Exception as e:
+                        print(e)
+                        print('Patch ' + str(startr) + ':' + str(startc) + ' failed. This could be due to no nuclei detected by Watershed or too few RNAs in the patch.')
+            write_to_anndata(save_path,bin_file)
+
+        elif cluster_index=='print':
+            print(str(n_patches) + ' patches need to be processed.')
+            print('Array index 0-'+str(n_patches-1))
+        elif cluster_index=='merge':
+            write_to_anndata(save_path,bin_file)
+        else:
+            cluster_index=int(cluster_index)
+            index=0
+            for startr in range(0, rmax, patch_size):
+                for startc in range(0, cmax, patch_size):
+                    if index==cluster_index:
+                        try:
+                            print('Processing the patch ' + str(startr) + ':' + str(startc) + '...')
+                            preprocessing.preprocess(save_path, bin_file, image_file, prealigned, align, startr, startc, patch_size, bin_size, ws_otsu_classes, ws_otsu_index, bg_th, n_neighbor)
+                            transformer.train(save_path, startr, startc, patch_size, epochs)
+                            postprocessing.postprocess(save_path, startr, startc, patch_size, bin_size, dia_estimate, min_sz)
+                        except Exception as e:
+                            print(e)
+                            print('Patch ' + str(startr) + ':' + str(startc) + ' failed. This could be due to no nuclei detected by Watershed or too few RNAs in the patch.')
+                    index+=1
+
