@@ -627,6 +627,7 @@ cli.add_command(super_resolution)
 @click.option("--n_neighbor", default=50)
 @click.option("--dia_estimate", default=20)
 @click.option("--min_sz", default=500)
+@click.option("--cluster_index", type=str,default='-1')
 @_init
 def segmentation(
     project_file,
@@ -636,7 +637,8 @@ def segmentation(
     ws_otsu_index,
     n_neighbor,
     dia_estimate,
-    min_sz
+    min_sz,
+    cluster_index
 ):
     r"""
     Runs segment model based on a project configuration file.
@@ -684,7 +686,8 @@ def segmentation(
         n_neighbor=n_neighbor,
         epochs=config["segmentation"]["epochs"],
         dia_estimate=dia_estimate,
-        min_sz=min_sz)
+        min_sz=min_sz,
+        cluster_index=cluster_index)
 
 
 
